@@ -132,7 +132,7 @@
     &copy; 2025 Ink Vandals — All rights reserved.
 </footer>
 
-<!-- Spline Runtime with Double Smoothing -->
+<!-- Spline Runtime with Vector-Based Smoothing -->
 <script type="module">
     import { Application } from 'https://unpkg.com/@splinetool/runtime@1.0.46/build/runtime.js';
 
@@ -147,10 +147,8 @@
         let targetY = 0;
         let currentX = 0;
         let currentY = 0;
-        let rotationX = 0;
-        let rotationY = 0;
-        const easing = 0.1;          // Easing for mouse movement tracking
-        const rotationEasing = 0.08; // Easing for smooth rotation
+        const easing = 0.08; // Main easing speed
+        const maxStep = 0.05; // Cap maximum movement per frame
 
         // Update targetX/Y on mouse move
         document.addEventListener('mousemove', (event) => {
@@ -158,19 +156,27 @@
             targetY = event.clientY / window.innerHeight - 0.5;
         });
 
-        // Smoothly apply rotation every frame
         function animate() {
             if (logoObject) {
-                // Smooth mouse tracking
-                currentX += (targetX - currentX) * easing;
-                currentY += (targetY - currentY) * easing;
+                // Calculate deltas
+                let deltaX = (targetX - currentX) * easing;
+                let deltaY = (targetY - currentY) * easing;
 
-                // Smooth rotation toward current position
-                rotationY += ((currentX * Math.PI) - rotationY) * rotationEasing;
-                rotationX += ((currentY * Math.PI) - rotationX) * rotationEasing;
+                // Cap the speed
+                if (Math.abs(deltaX) > maxStep) {
+                    deltaX = maxStep * Math.sign(deltaX);
+                }
+                if (Math.abs(deltaY) > maxStep) {
+                    deltaY = maxStep * Math.sign(deltaY);
+                }
 
-                logoObject.rotation.y = rotationY;
-                logoObject.rotation.x = rotationX;
+                // Apply smoothed movement
+                currentX += deltaX;
+                currentY += deltaY;
+
+                // Apply rotation
+                logoObject.rotation.y = currentX * Math.PI;
+                logoObject.rotation.x = currentY * Math.PI;
             }
             requestAnimationFrame(animate);
         }
