@@ -132,7 +132,7 @@
     &copy; 2025 Ink Vandals — All rights reserved.
 </footer>
 
-<!-- Spline Runtime - Position Parallax with Throttle -->
+<!-- Spline Runtime - Mouse Tracking with Deadzone -->
 <script type="module">
     import { Application } from 'https://unpkg.com/@splinetool/runtime@1.0.46/build/runtime.js';
 
@@ -147,26 +147,23 @@
         let targetY = 0;
         let currentX = 0;
         let currentY = 0;
-        const easing = 0.08;         // Smoothness
-        const movementRange = 0.5;   // Very subtle parallax
-        const frameDelay = 33;       // ~30fps throttle
+        const easing = 0.08;
+        const maxMovementFactor = 0.3; // Limits the max distance (30% of full mouse movement)
 
         // Track mouse position
         document.addEventListener('mousemove', (event) => {
-            targetX = (event.clientX / window.innerWidth - 0.5) * movementRange;
-            targetY = -(event.clientY / window.innerHeight - 0.5) * movementRange;
+            targetX = (event.clientX / window.innerWidth - 0.5) * maxMovementFactor;
+            targetY = -(event.clientY / window.innerHeight - 0.5) * maxMovementFactor;
         });
 
-        let lastUpdate = 0;
-        function animate(timestamp) {
-            if (timestamp - lastUpdate > frameDelay) {
-                if (logoObject) {
-                    currentX += (targetX - currentX) * easing;
-                    currentY += (targetY - currentY) * easing;
-                    logoObject.position.x = currentX;
-                    logoObject.position.y = currentY;
-                }
-                lastUpdate = timestamp;
+        function animate() {
+            if (logoObject) {
+                currentX += (targetX - currentX) * easing;
+                currentY += (targetY - currentY) * easing;
+
+                // Apply rotation (limited movement)
+                logoObject.rotation.y = currentX * Math.PI;
+                logoObject.rotation.x = currentY * Math.PI;
             }
             requestAnimationFrame(animate);
         }
