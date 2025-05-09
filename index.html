@@ -77,34 +77,19 @@
             z-index: 2;
         }
 
-        .vhs-glitch {
+        /* Make the logo fixed as background */
+        #logo-section {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
-            background: repeating-linear-gradient(
-                0deg,
-                rgba(255, 255, 255, 0.08) 0px,
-                rgba(255, 255, 255, 0.08) 2px,
-                transparent 4px,
-                transparent 6px
-            );
-            pointer-events: none;
-            animation: flicker 0.08s infinite;
-            z-index: 1;
-        }
-
-        @keyframes flicker {
-            0%   { opacity: 0.2; }
-            50%  { opacity: 0.4; }
-            100% { opacity: 0.2; }
+            height: 130vh; /* 30% bigger */
+            z-index: 0;
+            overflow: hidden;
         }
     </style>
 </head>
 <body>
-
-<div class="vhs-glitch"></div>
 
 <header>
     <div><strong>Ink Vandals</strong></div>
@@ -116,9 +101,9 @@
     </nav>
 </header>
 
-<section id="logo-section" class="section">
+<section id="logo-section">
     <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.92/build/spline-viewer.js"></script>
-    <spline-viewer url="https://prod.spline.design/fN8lktsxrH31WaQr/scene.splinecode" style="width: 100%; height: 100vh; border: none;"></spline-viewer>
+    <spline-viewer url="https://prod.spline.design/fN8lktsxrH31WaQr/scene.splinecode" style="width: 100%; height: 130vh; border: none;"></spline-viewer>
 </section>
 
 <section id="our-friends" class="section">
