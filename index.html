@@ -77,8 +77,8 @@
             z-index: 2;
         }
 
-        /* Spline canvas background */
-        #spline-background {
+        /* Full background Spline viewer */
+        #background-spline {
             position: fixed;
             top: 0;
             left: 0;
@@ -101,8 +101,11 @@
     </nav>
 </header>
 
-<!-- Spline Canvas -->
-<canvas id="spline-background"></canvas>
+<!-- Full background Spline scene -->
+<section id="background-spline">
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.92/build/spline-viewer.js"></script>
+    <spline-viewer url="https://prod.spline.design/pKLy8cXTqm-ihWAL/scene.splinecode" style="width: 100%; height: 100vh; border: none;"></spline-viewer>
+</section>
 
 <section id="our-friends" class="section">
     <h2>Our Friends</h2>
@@ -131,34 +134,6 @@
 <footer>
     &copy; 2025 Ink Vandals — All rights reserved.
 </footer>
-
-<!-- Spline Runtime - Scroll-Based 360 Rotation -->
-<script type="module">
-    import { Application } from 'https://unpkg.com/@splinetool/runtime@1.0.46/build/runtime.js';
-
-    const canvas = document.getElementById('spline-background');
-    const app = new Application(canvas);
-
-    app.load('https://prod.spline.design/fN8lktsxrH31WaQr/scene.splinecode').then(() => {
-        const logoObject = app.findObjectByName('obj1');
-        console.log('Logo object:', logoObject);
-
-        function updateRotation() {
-            if (logoObject) {
-                const scrollTop = window.scrollY || document.documentElement.scrollTop;
-                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-
-                const scrollFraction = scrollTop / docHeight;
-                const rotationAngle = scrollFraction * 2 * Math.PI; // 360 degrees
-
-                logoObject.rotation.y = rotationAngle;
-            }
-            requestAnimationFrame(updateRotation);
-        }
-
-        updateRotation();  // Start rotation loop
-    });
-</script>
 
 </body>
 </html>
