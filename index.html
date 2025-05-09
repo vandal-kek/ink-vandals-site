@@ -142,12 +142,13 @@
     app.load('https://prod.spline.design/fN8lktsxrH31WaQr/scene.splinecode').then(() => {
         const logoObject = app.findObjectByName('obj1');
 
+        console.log('Logo object:', logoObject);  // Debug: check if we find the object
+
         document.addEventListener('mousemove', (event) => {
             const x = event.clientX / window.innerWidth - 0.5;
             const y = event.clientY / window.innerHeight - 0.5;
 
             if (logoObject) {
-                // Rotate the object based on mouse position
                 logoObject.rotation.y = x * Math.PI;
                 logoObject.rotation.x = y * Math.PI;
             }
