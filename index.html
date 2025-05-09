@@ -141,18 +141,27 @@
 
     app.load('https://prod.spline.design/fN8lktsxrH31WaQr/scene.splinecode').then(() => {
         const logoObject = app.findObjectByName('obj1');
+        console.log('Logo object:', logoObject);  // Debug check
 
-        console.log('Logo object:', logoObject);  // Debug: check if we find the object
+        let targetX = 0;
+        let targetY = 0;
 
+        // Update targetX/Y on mouse move
         document.addEventListener('mousemove', (event) => {
-            const x = event.clientX / window.innerWidth - 0.5;
-            const y = event.clientY / window.innerHeight - 0.5;
-
-            if (logoObject) {
-                logoObject.rotation.y = x * Math.PI;
-                logoObject.rotation.x = y * Math.PI;
-            }
+            targetX = event.clientX / window.innerWidth - 0.5;
+            targetY = event.clientY / window.innerHeight - 0.5;
         });
+
+        // Smoothly apply rotation every frame
+        function animate() {
+            if (logoObject) {
+                logoObject.rotation.y = targetX * Math.PI;
+                logoObject.rotation.x = targetY * Math.PI;
+            }
+            requestAnimationFrame(animate);
+        }
+
+        animate();  // Start the animation loop
     });
 </script>
 
