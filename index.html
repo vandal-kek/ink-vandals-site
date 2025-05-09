@@ -140,16 +140,17 @@
     const spline = new Spline(canvas);
 
     spline.load('https://prod.spline.design/fN8lktsxrH31WaQr/scene.splinecode').then(() => {
-        const logoObject = spline.findObjectByName('black logo normal no bg 405');
+        const logoGroup = spline.findObjectByName('black logo normal no bg 405');
 
         document.addEventListener('mousemove', (event) => {
             const x = event.clientX / window.innerWidth - 0.5;
             const y = event.clientY / window.innerHeight - 0.5;
 
-            if (logoObject) {
-                // Rotate based on mouse position
-                logoObject.rotation.y = x * Math.PI;
-                logoObject.rotation.x = y * Math.PI;
+            if (logoGroup && logoGroup.children) {
+                logoGroup.children.forEach(child => {
+                    child.rotation.y = x * Math.PI;
+                    child.rotation.x = y * Math.PI;
+                });
             }
         });
     });
