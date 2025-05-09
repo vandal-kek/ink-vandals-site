@@ -132,7 +132,7 @@
     &copy; 2025 Ink Vandals — All rights reserved.
 </footer>
 
-<!-- Spline Runtime with Smooth Easing -->
+<!-- Spline Runtime with Double Smoothing -->
 <script type="module">
     import { Application } from 'https://unpkg.com/@splinetool/runtime@1.0.46/build/runtime.js';
 
@@ -147,7 +147,10 @@
         let targetY = 0;
         let currentX = 0;
         let currentY = 0;
-        const easing = 0.1;  // Smaller = smoother/slower; bigger = snappier
+        let rotationX = 0;
+        let rotationY = 0;
+        const easing = 0.1;          // Easing for mouse movement tracking
+        const rotationEasing = 0.08; // Easing for smooth rotation
 
         // Update targetX/Y on mouse move
         document.addEventListener('mousemove', (event) => {
@@ -158,13 +161,16 @@
         // Smoothly apply rotation every frame
         function animate() {
             if (logoObject) {
-                // Gradually move currentX/Y toward targetX/Y
+                // Smooth mouse tracking
                 currentX += (targetX - currentX) * easing;
                 currentY += (targetY - currentY) * easing;
 
-                // Apply rotation
-                logoObject.rotation.y = currentX * Math.PI;
-                logoObject.rotation.x = currentY * Math.PI;
+                // Smooth rotation toward current position
+                rotationY += ((currentX * Math.PI) - rotationY) * rotationEasing;
+                rotationX += ((currentY * Math.PI) - rotationX) * rotationEasing;
+
+                logoObject.rotation.y = rotationY;
+                logoObject.rotation.x = rotationX;
             }
             requestAnimationFrame(animate);
         }
