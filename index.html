@@ -132,7 +132,7 @@
     &copy; 2025 Ink Vandals — All rights reserved.
 </footer>
 
-<!-- Spline Runtime with Vector-Based Smoothing -->
+<!-- Spline Runtime - Prioritize Y-axis Only -->
 <script type="module">
     import { Application } from 'https://unpkg.com/@splinetool/runtime@1.0.46/build/runtime.js';
 
@@ -144,39 +144,19 @@
         console.log('Logo object:', logoObject);
 
         let targetX = 0;
-        let targetY = 0;
         let currentX = 0;
-        let currentY = 0;
-        const easing = 0.08; // Main easing speed
-        const maxStep = 0.05; // Cap maximum movement per frame
+        const easing = 0.08;
 
-        // Update targetX/Y on mouse move
+        // Only track horizontal (X) movement
         document.addEventListener('mousemove', (event) => {
             targetX = event.clientX / window.innerWidth - 0.5;
-            targetY = event.clientY / window.innerHeight - 0.5;
         });
 
         function animate() {
             if (logoObject) {
-                // Calculate deltas
-                let deltaX = (targetX - currentX) * easing;
-                let deltaY = (targetY - currentY) * easing;
-
-                // Cap the speed
-                if (Math.abs(deltaX) > maxStep) {
-                    deltaX = maxStep * Math.sign(deltaX);
-                }
-                if (Math.abs(deltaY) > maxStep) {
-                    deltaY = maxStep * Math.sign(deltaY);
-                }
-
-                // Apply smoothed movement
-                currentX += deltaX;
-                currentY += deltaY;
-
-                // Apply rotation
+                // Smooth horizontal movement only
+                currentX += (targetX - currentX) * easing;
                 logoObject.rotation.y = currentX * Math.PI;
-                logoObject.rotation.x = currentY * Math.PI;
             }
             requestAnimationFrame(animate);
         }
