@@ -134,13 +134,13 @@
 
 <!-- Spline Runtime -->
 <script type="module">
-    import Spline from 'https://unpkg.com/@splinetool/runtime@1.0.46/build/runtime.js';
+    import { Application } from 'https://unpkg.com/@splinetool/runtime@1.0.46/build/runtime.js';
 
     const canvas = document.getElementById('spline-background');
-    const spline = new Spline(canvas);
+    const app = new Application(canvas);
 
-    spline.load('https://prod.spline.design/fN8lktsxrH31WaQr/scene.splinecode').then(() => {
-        const logoObject = spline.findObjectByName('obj1');
+    app.load('https://prod.spline.design/fN8lktsxrH31WaQr/scene.splinecode').then(() => {
+        const logoObject = app.findObjectByName('obj1');
 
         document.addEventListener('mousemove', (event) => {
             const x = event.clientX / window.innerWidth - 0.5;
